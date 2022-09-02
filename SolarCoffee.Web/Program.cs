@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using SolarCoffee.Data;
+using SolarCoffee.Services.Product;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -14,6 +15,8 @@ builder.Services.AddDbContext<SolarDbContext>(opts => {
     opts.EnableDetailedErrors();
     opts.UseNpgsql(builder.Configuration.GetConnectionString("solar.dev"));
 });
+
+builder.Services.AddTransient<IProductService, ProductService>();
 
 var app = builder.Build();
 
