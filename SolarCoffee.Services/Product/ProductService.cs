@@ -14,7 +14,7 @@ namespace SolarCoffee.Services.Product
         /// <summary>
         /// Retrives all Product from the database
         /// </summary>
-        /// <returns></returns>
+        /// <returns>List<Product></returns>
         public List<Data.Models.Product> GetAllProducts()
         {
             return _db.Products!.ToList();
@@ -23,8 +23,8 @@ namespace SolarCoffee.Services.Product
         /// <summary>
         /// Retrives a Product by primary key
         /// </summary>
-        /// <param name="id"></param>
-        /// <returns></returns>
+        /// <param name="id">int product primary key</param>
+        /// <returns>Product</returns>
         public Data.Models.Product GetProductById(int id)
         {
             return _db.Products!.Find(id)!;
@@ -33,8 +33,8 @@ namespace SolarCoffee.Services.Product
         /// <summary>
         /// Add a new product to the database
         /// </summary>
-        /// <param name="product"></param>
-        /// <returns></returns>
+        /// <param name="product">Product instance</param>
+        /// <returns>ServiceResponse<Product></returns>
         public ServiceResponse<Data.Models.Product> CreateProduct(Data.Models.Product product)
         {
             try
@@ -52,19 +52,31 @@ namespace SolarCoffee.Services.Product
 
                 _db.SaveChanges();
 
-                return new ServiceResponse<Data.Models.Product> { Data = product ,Success = true, Time = DateTime.UtcNow, Message = "Saved new product" };
+                return new ServiceResponse<Data.Models.Product> 
+                { 
+                    Data = product,
+                    Success = true,
+                    Time = DateTime.UtcNow,
+                    Message = "Saved new product"
+                };
             }
             catch (Exception e)
             {
-                return new ServiceResponse<Data.Models.Product> { Data = product, Success = false, Time = DateTime.UtcNow, Message = e.StackTrace };
+                return new ServiceResponse<Data.Models.Product>
+                { 
+                    Data = product,
+                    Success = false,
+                    Time = DateTime.UtcNow,
+                    Message = e.StackTrace
+                };
             }
         }
 
         /// <summary>
         /// Archives a Product by setting boolean IsArchived to true
         /// </summary>
-        /// <param name="id"></param>
-        /// <returns></returns>
+        /// <param name="id">int product primary key</param>
+        /// <returns>ServiceResponse<Product></returns>
         public ServiceResponse<Data.Models.Product> ArchiveProduct(int id)
         {
             try
@@ -75,11 +87,23 @@ namespace SolarCoffee.Services.Product
 
                 _db.SaveChanges();
 
-                return new ServiceResponse<Data.Models.Product> { Data = product, Success = true, Message = "Archived Product", Time = DateTime.UtcNow };
+                return new ServiceResponse<Data.Models.Product> 
+                { 
+                    Data = product,
+                    Success = true,
+                    Time = DateTime.UtcNow,
+                    Message = "Archived Product"
+                };
             }
             catch (Exception e)
             {
-                return new ServiceResponse<Data.Models.Product> { Data = null, Success = true, Message = e.StackTrace, Time = DateTime.UtcNow };
+                return new ServiceResponse<Data.Models.Product> 
+                { 
+                    Data = null,
+                    Success = true,
+                    Time = DateTime.UtcNow,
+                    Message = e.StackTrace
+                };
             }
             
         }
