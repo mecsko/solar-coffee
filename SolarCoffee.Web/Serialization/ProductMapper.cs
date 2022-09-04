@@ -7,8 +7,8 @@ namespace SolarCoffee.Web.Serialization
         /// <summary>
         /// Maps a Product data model to a ProductModel view model
         /// </summary>
-        /// <param name="product"></param>
-        /// <returns></returns>
+        /// <param name="product">Product product</param>
+        /// <returns>ProductModel</returns>
         public static ProductModel SerializeProductModel(Data.Models.Product product)
         {
             return new ProductModel
@@ -27,13 +27,12 @@ namespace SolarCoffee.Web.Serialization
         /// <summary>
         /// Maps a ProductModel view model to a Product data model
         /// </summary>
-        /// <param name="product"></param>
-        /// <returns></returns>
+        /// <param name="product">ProductModel product</param>
+        /// <returns>Product</returns>
         public static Data.Models.Product SerializeProductModel(ProductModel product)
         {
             return new Data.Models.Product
             {
-                Id = product.Id,
                 CreatedOn = product.CreatedOn,
                 UpdatedOn = product.UpdatedOn,
                 Price = product.Price,

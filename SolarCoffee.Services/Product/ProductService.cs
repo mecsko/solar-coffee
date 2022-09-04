@@ -55,7 +55,7 @@ namespace SolarCoffee.Services.Product
                 return new ServiceResponse<Data.Models.Product> 
                 { 
                     Data = product,
-                    Success = true,
+                    IsSuccess = true,
                     Time = DateTime.UtcNow,
                     Message = "Saved new product"
                 };
@@ -65,7 +65,7 @@ namespace SolarCoffee.Services.Product
                 return new ServiceResponse<Data.Models.Product>
                 { 
                     Data = product,
-                    Success = false,
+                    IsSuccess = false,
                     Time = DateTime.UtcNow,
                     Message = e.StackTrace
                 };
@@ -90,7 +90,7 @@ namespace SolarCoffee.Services.Product
                 return new ServiceResponse<Data.Models.Product> 
                 { 
                     Data = product,
-                    Success = true,
+                    IsSuccess = true,
                     Time = DateTime.UtcNow,
                     Message = "Archived Product"
                 };
@@ -100,7 +100,7 @@ namespace SolarCoffee.Services.Product
                 return new ServiceResponse<Data.Models.Product> 
                 { 
                     Data = null,
-                    Success = true,
+                    IsSuccess = true,
                     Time = DateTime.UtcNow,
                     Message = e.StackTrace
                 };

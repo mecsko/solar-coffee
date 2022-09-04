@@ -65,7 +65,7 @@ namespace SolarCoffee.Services.Order
 
                 return new ServiceResponse<bool>
                 {
-                    Success = true,
+                    IsSuccess = true,
                     Data = true,
                     Message = "Open order created",
                     Time = now
@@ -75,7 +75,7 @@ namespace SolarCoffee.Services.Order
             {
                 return new ServiceResponse<bool>
                 {
-                    Success = false,
+                    IsSuccess = false,
                     Data = false,
                     Message = e.StackTrace,
                     Time = now
@@ -103,7 +103,7 @@ namespace SolarCoffee.Services.Order
 
                 return new ServiceResponse<bool>
                 {
-                    Success = true,
+                    IsSuccess = true,
                     Data = true,
                     Message = $"Order {order.Id} closed: Invoice paid in full",
                     Time = now
@@ -113,7 +113,7 @@ namespace SolarCoffee.Services.Order
             {
                 return new ServiceResponse<bool>
                 {
-                    Success = false,
+                    IsSuccess = false,
                     Data = false,
                     Message = e.StackTrace,
                     Time = now

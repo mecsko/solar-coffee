@@ -59,7 +59,7 @@ namespace SolarCoffee.Services.Inventory
 
                 return new ServiceResponse<ProductInventory>
                 {
-                    Success = true,
+                    IsSuccess = true,
                     Data = inventory,
                     Message = $"Product {id} inventory adjusted",
                     Time = now
@@ -69,7 +69,7 @@ namespace SolarCoffee.Services.Inventory
             {
                 return new ServiceResponse<ProductInventory>
                 {
-                    Success = false,
+                    IsSuccess = false,
                     Data = null,
                     Message = "Error updating ProductInventory QuantityOnHand",
                     Time = now
