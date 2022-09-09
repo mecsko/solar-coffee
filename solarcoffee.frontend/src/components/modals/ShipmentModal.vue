@@ -39,9 +39,14 @@
 
   const qtyReceived = ref(0);
 
-  const emit = defineEmits(["close", "save:shipment"]);
+  const emit = defineEmits<{
+    (event: "close"): void;
+    (event: "save:shipment", shipment: IShipment): void;
+  }>();
 
-  const close = () => emit("close");
+  function close() {
+    emit("close");
+  }
   function save() {
     if (selectedProduct.value) {
       const shipment: IShipment = {

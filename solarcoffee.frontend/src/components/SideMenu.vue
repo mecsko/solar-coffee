@@ -1,4 +1,5 @@
 <template>
+  <button class="close-button" @click="emit('close')">&#11013;</button>
   <div class="side-menu-container">
     <router-link to="/"><img alt="logo" src="../assets/logo.png" /></router-link>
     <h1>Management Portal</h1>
@@ -21,6 +22,8 @@
   import { useRouter } from "vue-router";
 
   const router = useRouter();
+
+  const emit = defineEmits<{ (event: "close"): void }>();
 
   function goToRoute(route: string) {
     router.push(route);

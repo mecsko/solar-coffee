@@ -2,6 +2,7 @@
   <div class="btn-link">
     <button
       :class="['solar-button', { 'full-width': props.isFullWidth }]"
+      :disabled="props.isDisabled"
       type="button"
       @click="onClick"
     >
@@ -16,10 +17,17 @@
       default: false,
       type: Boolean,
     },
+    isDisabled: {
+      required: false,
+      default: false,
+      type: Boolean,
+    },
   });
 
-  const emit = defineEmits(["button:click"]);
-  const onClick = () => emit("button:click");
+  const emit = defineEmits<{ (event: "button:click"): void }>();
+  function onClick() {
+    emit("button:click");
+  }
 </script>
 <style scoped lang="scss">
   @import "@/scss/global.scss";
@@ -49,7 +57,9 @@
     }
 
     &:disabled {
-      background: lighten($solar-blue, 15%);
+      cursor: default;
+      pointer-events: none;
+      background: lighten($solar-blue, 20%);
       border-bottom: 2px solid lighten($solar-blue, 20%);
     }
 

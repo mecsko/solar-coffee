@@ -4,8 +4,8 @@
     <hr />
 
     <div class="inventory-actions">
-      <solar-button id="addNewBtn" @click="showNewProductModal">Add New Item</solar-button>
-      <solar-button id="receiveShipmentBtn" @click="showShipmentModal">
+      <solar-button id="addNewBtn" @button:click="showNewProductModal">Add New Item</solar-button>
+      <solar-button id="receiveShipmentBtn" @button:click="showShipmentModal">
         Receive Shipment
       </solar-button>
     </div>
@@ -21,13 +21,20 @@
 
       <tr v-for="item in inventory" :key="item.id">
         <td>{{ item.product.name }}</td>
-        <td>{{ item.quantityOnHand }}</td>
+        <td :class="`${applyColor(item.quantityOnHand, item.idealQuantity)}`">
+          {{ item.quantityOnHand }}
+        </td>
         <td>{{ price(item.product.price) }}</td>
         <td>
           <span v-if="item.product.isTaxable">Yes</span>
           <span v-else>No</span>
         </td>
-        <td><div>X</div></td>
+        <td>
+          <div
+            class="lni lni-cross-circle product-archive"
+            @click="archiveProduct(item.product.id)"
+          ></div>
+        </td>
       </tr>
     </table>
 
@@ -45,56 +52,21 @@
   </div>
 </template>
 <script setup lang="ts">
-  import { ref } from "vue";
+  import { ref, onMounted } from "vue";
   import newProductModal from "@/components/modals/NewProduct.vue";
   import shipmentModal from "@/components/modals/ShipmentModal.vue";
   import solarButton from "@/components/SolarButton.vue";
+  import { InventoryService } from "@/servives/inventory-service";
+  import { ProductService } from "@/servives/product-service";
+  import { price } from "@/utils/humanize";
   import { IProductInventory, IProduct } from "../types/Product";
   import { IShipment } from "@/types/Shipment";
 
-  const now = new Date();
+  const inventoryService = new InventoryService();
+  const productService = new ProductService();
   const isNewProductVisible = ref(false);
   const isShipmentVisible = ref(false);
-
-  const inventory: IProductInventory[] = [
-    {
-      id: 1,
-      product: {
-        id: 1,
-        name: "Some Product",
-        description: "Good Stuff",
-        price: 100,
-        createdOn: now,
-        updatedOn: now,
-        isTaxable: true,
-        isArchived: false,
-      },
-      quantityOnHand: 100,
-      idealQuantity: 100,
-    },
-    {
-      id: 2,
-      product: {
-        id: 2,
-        name: "Another Product",
-        description: "Good Stuff",
-        price: 200,
-        createdOn: now,
-        updatedOn: now,
-        isTaxable: false,
-        isArchived: false,
-      },
-      quantityOnHand: 10,
-      idealQuantity: 1000,
-    },
-  ];
-
-  const price = (num: number) => {
-    if (isNaN(num)) {
-      return "-";
-    }
-    return "$ " + num.toFixed(2);
-  };
+  const inventory = ref<IProductInventory[]>([]);
 
   function showNewProductModal() {
     isNewProductVisible.value = true;
@@ -109,25 +81,67 @@
     isNewProductVisible.value = false;
   }
 
-  function saveNewProduct(product: IProduct) {
-    // const prodInv: IProductInventory = {
-    //   id: product.id,
-    //   product: product,
-    //   idealQuantity: 0,
-    //   quantityOnHand: 0,
-    // };
-    // inventory.push(prodInv);
-    console.log("product: ", product);
+  function applyColor(current: number, target: number) {
+    if (current <= 0) {
+      return "red";
+    } else if (Math.abs(target - current) > 8) {
+      return "yellow";
+    }
+    return "green";
   }
 
-  function saveNewShipment(shipment: IShipment) {
-    console.log("shipment: ", shipment);
+  async function archiveProduct(productId: number) {
+    await productService.archive(productId);
+    await initialize();
   }
+
+  async function saveNewProduct(newProduct: IProduct) {
+    await productService.save(newProduct);
+    isNewProductVisible.value = false;
+    await initialize();
+  }
+
+  async function saveNewShipment(shipment: IShipment) {
+    await inventoryService.updateInventoryQuantity(shipment);
+    isShipmentVisible.value = false;
+    await initialize();
+  }
+
+  async function initialize() {
+    inventory.value = await inventoryService.getInventory();
+  }
+
+  onMounted(async () => {
+    await initialize();
+  });
 </script>
 <style scoped lang="scss">
   @import "@/scss/global.scss";
 
   .inventory-actions {
     display: flex;
+    margin-bottom: 0.8rem;
+  }
+
+  .green {
+    font-weight: bold;
+    color: $solar-green;
+  }
+
+  .yellow {
+    font-weight: bold;
+    color: $solar-yellow;
+  }
+
+  .red {
+    font-weight: bold;
+    color: $solar-red;
+  }
+
+  .product-archive {
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 1.2rem;
+    color: $solar-red;
   }
 </style>

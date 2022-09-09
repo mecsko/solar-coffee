@@ -3,7 +3,7 @@
     <template #header>Add New Product</template>
     <template #body>
       <ul class="newProduct">
-        <li>
+        <li class="checkboxList">
           <label for="isTaxable">Is this taxable?</label>
           <input id="isTaxable" v-model="newProduct.isTaxable" type="checkbox" />
         </li>
@@ -31,11 +31,12 @@
 </template>
 
 <script setup lang="ts">
+  import { reactive } from "vue";
   import solarModal from "@/components/modals/SolarModal.vue";
   import solarButton from "@/components/SolarButton.vue";
   import { IProduct } from "@/types/Product";
 
-  const newProduct: IProduct = {
+  const newProduct = reactive<IProduct>({
     createdOn: new Date(),
     updatedOn: new Date(),
     id: 0,
@@ -44,15 +45,19 @@
     name: "",
     price: 0,
     isArchived: false,
-  };
+  });
 
   const emit = defineEmits<{
     (event: "close"): void;
     (event: "save:product", product: IProduct): void;
   }>();
 
-  const close = () => emit("close");
-  const save = () => emit("save:product", newProduct);
+  function close() {
+    emit("close");
+  }
+  function save() {
+    emit("save:product", newProduct);
+  }
 </script>
 
 <style scoped lang="scss">
@@ -70,6 +75,20 @@
     line-height: 1.3rem;
     padding: 0.2rem;
     color: #555;
+  }
+
+  .checkboxList {
+    width: 100%;
+
+    input {
+      width: 20px;
+      height: 1.8rem;
+      margin-bottom: 1.2rem;
+      font-size: 1.1rem;
+      line-height: 1.3rem;
+      padding: 0.2rem;
+      color: #555;
+    }
   }
 
   label {

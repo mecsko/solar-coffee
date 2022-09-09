@@ -29,7 +29,7 @@ namespace SolarCoffee.Web.Controllers
                     IdealQuantity = pi.IdealQuantity,
                     QuantityOnHand = pi.QuantityOnHand
                 })
-                .OrderBy(inv => inv.Product.Name)
+                .OrderBy(inv => inv.Product?.Name)
                 .ToList();
 
             return Ok(inventory);
