@@ -15,7 +15,7 @@ namespace SolarCoffee.Web.Serialization
         /// <returns>SalesOrder</returns>
         public static SalesOrder SerializeInvoiceToOrder(InvoiceModel invoice)
         {
-            var now = DateTime.Now;
+            var now = DateTime.UtcNow;
 
             var salesOrderItems = invoice.LineItems!
                 .Select(item => new SalesOrderItem

@@ -33,6 +33,7 @@ namespace SolarCoffee.Web.Serialization
         {
             return new Data.Models.Product
             {
+                Id = product.Id,
                 CreatedOn = product.CreatedOn,
                 UpdatedOn = product.UpdatedOn,
                 Price = product.Price,

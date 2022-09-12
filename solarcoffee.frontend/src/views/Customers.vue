@@ -40,7 +40,7 @@
   import { onBeforeMount, ref } from "vue";
   import solarButton from "@/components/SolarButton.vue";
   import newCustomerModal from "@/components/modals/NewCustomerModal.vue";
-  import { CustomerService } from "@/servives/customer-service";
+  import { CustomerService } from "@/services/customer-service";
   import { date } from "@/utils/humanize";
   import { ICustomer } from "@/types/Customer";
 

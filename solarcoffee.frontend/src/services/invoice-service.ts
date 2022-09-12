@@ -9,6 +9,7 @@ export class InvoiceSerice {
     invoice.createdOn = now;
     invoice.updatedOn = now;
     const result: AxiosResponse = await axios.post(`${this.API_URL}/invoice`, invoice);
+    console.log("result: ", result);
     return result.data;
   }
 }

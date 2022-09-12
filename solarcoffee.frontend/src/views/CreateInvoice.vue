@@ -22,7 +22,7 @@
         <select id="product" v-model="newItem.product" class="invoiceLineItem">
           <option disabled value="null">Please select a Product</option>
           <option v-for="i in inventory" :key="i.product.id" :value="i.product">
-            {{ i.product.name }}
+            {{ i.product.name }} || Qty.: {{ i.quantityOnHand }}
           </option>
         </select>
         <label for="quantity">Quantity:</label>
@@ -137,15 +137,16 @@
   </div>
 </template>
 
+<!-- eslint-disable @typescript-eslint/no-non-null-assertion -->
 <script setup lang="ts">
   import { computed, onBeforeMount, ref } from "vue";
   import { useRouter } from "vue-router";
   import jspdf from "jspdf";
   import html2camvas from "html2canvas";
   import solarButton from "@/components/SolarButton.vue";
-  import { CustomerService } from "@/servives/customer-service";
-  import { InventoryService } from "@/servives/inventory-service";
-  import { InvoiceSerice } from "@/servives/invoice-service";
+  import { CustomerService } from "@/services/customer-service";
+  import { InventoryService } from "@/services/inventory-service";
+  import { InvoiceSerice } from "@/services/invoice-service";
   import { date, price } from "@/utils/humanize";
   import { ICustomer } from "@/types/Customer";
   import { IInvoice, ILineItem } from "@/types/Invoice";
@@ -233,9 +234,14 @@
 
   async function submitInvoice() {
     invoice.value = {
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
       customerId: selectedCustomerId.value!,
       lineItems: lineItems.value,
     };
+
+    console.log("invoice: ", invoice.value);
+    console.log("selectedCustomerId: ", selectedCustomerId.value);
+    console.log("lineItems: ", lineItems.value);
 
     await invoiceService.makeNewInvoice(invoice.value);
 
@@ -245,6 +251,7 @@
 
   function addLineItem() {
     const newItemTemp: ILineItem = newItem.value;
+    console.log("newItem: ", newItem.value);
 
     const existingItems = lineItems.value.map((item) => item.product?.id);
 
@@ -256,6 +263,7 @@
     } else {
       lineItems.value.push(newItem.value);
     }
+    console.log("lineItems: ", lineItems.value);
 
     newItem.value = { product: null, quantity: 0 };
   }

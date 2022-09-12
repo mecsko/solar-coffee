@@ -66,6 +66,8 @@ builder.WebHost.UseUrls("http://localhost:5000", "https://localhost:5001");
 
 var app = builder.Build();
 
+AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
+
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {

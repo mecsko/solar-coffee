@@ -38,7 +38,7 @@ namespace SolarCoffee.Services.Customer
                 {
                     IsSuccess = true,
                     Message = "New customer added",
-                    Time = DateTime.Now,
+                    Time = DateTime.UtcNow,
                     Data = customer
                 };
             }
@@ -48,7 +48,7 @@ namespace SolarCoffee.Services.Customer
                 {
                     IsSuccess = false,
                     Message = e.StackTrace,
-                    Time = DateTime.Now,
+                    Time = DateTime.UtcNow,
                     Data = customer
                 };
             }

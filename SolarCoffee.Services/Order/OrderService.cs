@@ -42,7 +42,7 @@ namespace SolarCoffee.Services.Order
         /// <returns>ServiceResponse<bool></returns>
         public ServiceResponse<bool> GenerateOpenOrder(SalesOrder order)
         {
-            var now = DateTime.Now;
+            var now = DateTime.UtcNow;
 
             _logger.LogInformation("Generating new order");
 
@@ -53,6 +53,8 @@ namespace SolarCoffee.Services.Order
 
                 var inventoryId = _inventoryService
                     .GetByProductId(item.Product.Id).Id;
+                _logger.LogInformation("item", item);
+                _logger.LogInformation("inventoryId", inventoryId);
 
                 _inventoryService
                     .UpdateUnitsAvailable(inventoryId, -item.Quantity);
@@ -90,7 +92,7 @@ namespace SolarCoffee.Services.Order
         /// <returns>ServiceResponse<bool></returns>
         public ServiceResponse<bool> MarkFulfilled(int id)
         {
-            var now = DateTime.Now;
+            var now = DateTime.UtcNow;
             var order = _db.SalesOrders!
                 .Find(id);
             order!.UpdatedOn = now;
