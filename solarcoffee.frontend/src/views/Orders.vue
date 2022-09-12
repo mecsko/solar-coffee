@@ -19,7 +19,7 @@
           <td>
             <div
               v-if="!order.isPaid"
-              class="lni lni-checkmark-circle order-complete"
+              class="lni lni-checkmark-circle order-complete green"
               @click="markComplete(order.id)"
             ></div>
           </td>
@@ -27,42 +27,6 @@
       </thead>
     </table>
   </div>
-  <!-- <div v-for="order in orders" :key="order.id">
-    <table class="table">
-      <thead>
-        <tr>
-          <th>Customer</th>
-          <th>Address</th>
-          <th>Item</th>
-          <th>Quantity</th>
-          <th>Price</th>
-        </tr>
-      </thead>
-      <tr v-for="item in order.salesOrderItems" :key="item.product?.id">
-        <td>{{ order.customer.firstName + " " + order.customer.lastName }}</td>
-        <td>
-          {{
-            order.customer.primaryAddress.addressLine1 +
-            " " +
-            order.customer.primaryAddress.addressLine2
-          }}
-        </td>
-        <td>{{ item.product?.name }}</td>
-        <td>{{ item.quantity }}</td>
-        <td>{{ item.product?.price }}</td>
-      </tr>
-      <tr>
-        <th colspan="4"></th>
-        <th>Grand Total</th>
-      </tr>
-      <tfoot>
-        <tr>
-          <td colspan="4"></td>
-          <td>{{ runningTotal(order.id) }}</td>
-        </tr>
-      </tfoot>
-    </table>
-  </div> -->
 </template>
 
 <!-- eslint-disable @typescript-eslint/no-non-null-assertion -->
@@ -102,4 +66,13 @@
 
 <style scoped lang="scss">
   @import "@/scss/global.scss";
+
+  .green {
+    font-weight: bold;
+    color: $solar-green;
+  }
+
+  .order-complete {
+    cursor: pointer;
+  }
 </style>
