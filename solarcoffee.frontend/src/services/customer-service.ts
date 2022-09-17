@@ -1,14 +1,13 @@
 import axios from "axios";
 import { ICustomer } from "@/types/Customer.d";
 import { IServiceResponse } from "@/types/ServiceResponse";
+import { Service } from "./service";
 
 /**
  * Customer Service
  * Provices UI business logic associated with Customers in our system
  */
-export class CustomerService {
-  API_URL = process.env.VUE_APP_API_URL_HTTPS;
-
+export class CustomerService extends Service {
   public async getCustomers(): Promise<IServiceResponse<ICustomer[]>> {
     const response: IServiceResponse<ICustomer[]> = await axios.get(`${this.API_URL}/customer`);
     return response;

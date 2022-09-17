@@ -3,6 +3,8 @@
     <h1 id="inventoryTitle">Inventory Dashboard</h1>
     <hr />
 
+    <inventory-chart :items="inventory" />
+
     <div class="inventory-actions">
       <solar-button id="addNewBtn" @button:click="showNewProductModal">Add New Item</solar-button>
       <solar-button id="receiveShipmentBtn" @button:click="showShipmentModal">
@@ -53,9 +55,11 @@
 </template>
 <script setup lang="ts">
   import { ref, onMounted } from "vue";
+  import { useStore } from "@/store/index";
   import newProductModal from "@/components/modals/NewProduct.vue";
   import shipmentModal from "@/components/modals/ShipmentModal.vue";
   import solarButton from "@/components/SolarButton.vue";
+  import InventoryChart from "@/components/charts/InventoryChart.vue";
   import { InventoryService } from "@/services/inventory-service";
   import { ProductService } from "@/services/product-service";
   import { price } from "@/utils/humanize";
@@ -64,6 +68,8 @@
 
   const inventoryService = new InventoryService();
   const productService = new ProductService();
+  const store = useStore();
+
   const isNewProductVisible = ref(false);
   const isShipmentVisible = ref(false);
   const inventory = ref<IProductInventory[]>([]);
@@ -109,6 +115,7 @@
 
   async function initialize() {
     inventory.value = await inventoryService.getInventory();
+    await store.getSnapshots();
   }
 
   onMounted(async () => {

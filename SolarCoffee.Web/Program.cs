@@ -40,7 +40,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 builder.Services.AddDbContext<SolarDbContext>(opts => {
-    opts.EnableDetailedErrors();
+    //opts.EnableDetailedErrors();
     opts.UseNpgsql(builder.Configuration.GetConnectionString("solar.dev"));
 });
 

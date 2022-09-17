@@ -18,11 +18,6 @@
   const closed = ref(false);
 
   function close() {
-    if (closed.value) {
-      console.log("opened");
-    } else {
-      console.log("closed");
-    }
     closed.value = !closed.value;
   }
 </script>

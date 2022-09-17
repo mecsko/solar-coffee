@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h1 id="orders-title">Sales Orders</h1>
+    <h1 id="ordersTitle">Sales Orders</h1>
     <hr />
     <table v-if="orders.length" id="sales-orders" class="table">
       <thead>

@@ -21,6 +21,20 @@ namespace SolarCoffee.Services.Inventory
         /// <returns>List<ProductInventory></returns>
         public List<ProductInventory> GetCurrentInventory()
         {
+            if (!_db.ProductInventorySnapshots!.Any())
+            {
+                try
+                {
+                    CreateSnapshot();
+                }
+                catch (Exception e)
+                {
+                    _logger.LogError("Error creating inventory snapshot");
+                    _logger.LogError("{}", e.StackTrace);
+                }
+                _db.SaveChanges();
+            }
+            
             return _db.ProductInventories!
                 .Include(pi => pi.Product)
                 .Where(pi => !pi.Product!.IsArchived)
@@ -47,7 +61,7 @@ namespace SolarCoffee.Services.Inventory
 
                 try
                 {
-                    CreateSnapshot(inventory);
+                    CreateSnapshot();
                 }
                 catch (Exception e)
                 {
@@ -92,18 +106,38 @@ namespace SolarCoffee.Services.Inventory
         /// <summary>
         /// Creates a Snapshot record using provided ProductInventory instance
         /// </summary>
-        private void CreateSnapshot(ProductInventory inventory)
+        //private void CreateSnapshot(ProductInventory inventory)
+        //{
+        //    var now = DateTime.UtcNow;
+
+        //    var snapshot = new ProductInventorySnapshot
+        //    {
+        //        SnapshotTime = now,
+        //        Product = inventory.Product,
+        //        QuantityOnHand = inventory.QuantityOnHand
+        //    };
+
+        //    _db.Add(snapshot);
+        //}
+        public void CreateSnapshot()
         {
-            var now = DateTime.UtcNow;
+            var now = DateTime.Now;
 
-            var snapshot = new ProductInventorySnapshot
+            var inventories = _db.ProductInventories!
+                .Include(inv => inv.Product)
+                .ToList();
+
+            foreach (var inventory in inventories)
             {
-                SnapshotTime = now,
-                Product = inventory.Product,
-                QuantityOnHand = inventory.QuantityOnHand
-            };
+                var snapshot = new ProductInventorySnapshot
+                {
+                    SnapshotTime = now,
+                    Product = inventory.Product,
+                    QuantityOnHand = inventory.QuantityOnHand,
+                };
 
-            _db.Add(snapshot);
+                _db.Add(snapshot);
+            }
         }
 
         /// <summary>
@@ -112,7 +146,7 @@ namespace SolarCoffee.Services.Inventory
         /// <returns>List<ProductInventorySnapshot></returns>
         public List<ProductInventorySnapshot> GetSnapshotHistory()
         {
-            var earliest = DateTime.UtcNow - TimeSpan.FromHours(6);
+            var earliest = DateTime.UtcNow - TimeSpan.FromHours(12);
 
             return _db.ProductInventorySnapshots!
                 .Include(snap => snap.Product)

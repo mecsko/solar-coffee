@@ -239,10 +239,6 @@
       lineItems: lineItems.value,
     };
 
-    console.log("invoice: ", invoice.value);
-    console.log("selectedCustomerId: ", selectedCustomerId.value);
-    console.log("lineItems: ", lineItems.value);
-
     await invoiceService.makeNewInvoice(invoice.value);
 
     downloadPdf();
@@ -251,7 +247,6 @@
 
   function addLineItem() {
     const newItemTemp: ILineItem = newItem.value;
-    console.log("newItem: ", newItem.value);
 
     const existingItems = lineItems.value.map((item) => item.product?.id);
 
@@ -263,15 +258,11 @@
     } else {
       lineItems.value.push(newItem.value);
     }
-    console.log("lineItems: ", lineItems.value);
 
     newItem.value = { product: null, quantity: 0 };
   }
 
   function finalizeOrder() {
-    console.log("selectedCustomerId: ", selectedCustomerId.value);
-    console.log("newItem: ", newItem.value);
-    console.log("lineItems: ", lineItems.value);
     invoiceStep.value = 3;
   }
 
@@ -291,8 +282,8 @@
     display: flex;
     width: 100%;
   }
-  .invoice-step {
-  }
+  // .invoice-step {
+  // }
 
   .invoice-step-detail {
     margin: 1.2rem;

@@ -1,7 +1,7 @@
 <template>
   <button class="close-button" @click="emit('close')">&#11013;</button>
   <div class="side-menu-container">
-    <router-link to="/"><img alt="logo" src="../assets/logo.png" /></router-link>
+    <router-link to="/"><img id="imgLogo" alt="logo" src="../assets/logo.png" /></router-link>
     <h1>Management Portal</h1>
     <solar-button id="menuInventory" is-full-width @button:click="goToRoute('/inventory')">
       Inventory

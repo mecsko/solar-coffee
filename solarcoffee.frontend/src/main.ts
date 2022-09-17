@@ -1,6 +1,14 @@
 import { createApp } from "vue";
-import App from "./App.vue";
-import router from "./router";
-import store from "./store";
+import App from "@/App.vue";
+import router from "@/router/router";
+import { createPinia } from "pinia";
+import VueApexCharts from "vue3-apexcharts";
 
-createApp(App).use(store).use(router).mount("#app");
+const app = createApp(App);
+const pinia = createPinia();
+
+app.use(VueApexCharts);
+app.use(router);
+app.use(pinia);
+
+app.mount("#app");

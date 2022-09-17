@@ -75,7 +75,6 @@
   }>();
 
   function save() {
-    console.log(customer);
     emits("save:customer", customer);
   }
 

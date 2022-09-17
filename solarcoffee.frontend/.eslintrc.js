@@ -1,7 +1,7 @@
 module.exports = {
   root: true,
   env: {
-    node: true,
+    es2021: true,
   },
   extends: [
     "plugin:@typescript-eslint/recommended",
@@ -28,10 +28,11 @@ module.exports = {
   },
   overrides: [
     {
-      files: ["**/__tests__/*.{j,t}s?(x)", "**/tests/unit/**/*.spec.{j,t}s?(x)"],
-      env: {
-        jest: true,
-      },
+      files: [
+        "**/__tests__/*.{j,t}s?(x)",
+        "**/tests/unit/**/*.spec.{j,t}s?(x)",
+        "**/tests/e2e/**/*.cy.{j,t}s?(x)",
+      ],
     },
   ],
 };
